@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>ねこの世界</title>
+  <icon>https://backup.meaqua.work/icon.png</icon>
+  
+  <link href="https://backup.meaqua.work/atom.xml" rel="self"/>
+  
+  <link href="https://backup.meaqua.work/"/>
+  <updated>2022-07-22T16:58:25.236Z</updated>
+  <id>https://backup.meaqua.work/</id>
+  
+  <author>
+    <name>稲坂梨彩</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>HinakoBot Blacklist</title>
+    <link href="https://backup.meaqua.work/1bac91af413a/"/>
+    <id>https://backup.meaqua.work/1bac91af413a/</id>
+    <published>2022-06-13T08:16:22.000Z</published>
+    <updated>2022-07-22T16:58:25.236Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;有传话筒 笑了&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Software" scheme="https://backup.meaqua.work/categories/Software/"/>
+    
+    <category term="Coding" scheme="https://backup.meaqua.work/categories/Coding/"/>
+    
+    
+    <category term="bot" scheme="https://backup.meaqua.work/tags/bot/"/>
+    
+    <category term="maintenance" scheme="https://backup.meaqua.work/tags/maintenance/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Debian 11 VPS deployment SP</title>
+    <link href="https://backup.meaqua.work/1e3db55d2473/"/>
+    <id>https://backup.meaqua.work/1e3db55d2473/</id>
+    <published>2022-06-09T14:45:32.000Z</published>
+    <updated>2022-07-22T16:58:25.236Z</updated>
+    
+    
+    <summary type="html">Encrypted post, please enter password</summary>
+    
+    
+    
+    <category term="Software" scheme="https://backup.meaqua.work/categories/Software/"/>
+    
+    <category term="Coding" scheme="https://backup.meaqua.work/categories/Coding/"/>
+    
+    
+    <category term="LNMP" scheme="https://backup.meaqua.work/tags/LNMP/"/>
+    
+    <category term="VPS" scheme="https://backup.meaqua.work/tags/VPS/"/>
+    
+    <category term="Debian" scheme="https://backup.meaqua.work/tags/Debian/"/>
+    
+    <category term="Nginx" scheme="https://backup.meaqua.work/tags/Nginx/"/>
+    
+    <category term="coding-enc" scheme="https://backup.meaqua.work/tags/coding-enc/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Debian 11 VPS deployment</title>
+    <link href="https://backup.meaqua.work/0e679178cb94/"/>
+    <id>https://backup.meaqua.work/0e679178cb94/</id>
+    <published>2022-06-09T10:23:29.000Z</published>
+    <updated>2022-07-22T16:58:25.236Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;Do NOT use BT Panel&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Software" scheme="https://backup.meaqua.work/categories/Software/"/>
+    
+    <category term="Coding" scheme="https://backup.meaqua.work/categories/Coding/"/>
+    
+    
+    <category term="LNMP" scheme="https://backup.meaqua.work/tags/LNMP/"/>
+    
+    <category term="VPS" scheme="https://backup.meaqua.work/tags/VPS/"/>
+    
+    <category term="Debian" scheme="https://backup.meaqua.work/tags/Debian/"/>
+    
+    <category term="Nginx" scheme="https://backup.meaqua.work/tags/Nginx/"/>
+    
+    <category term="Pyenv" scheme="https://backup.meaqua.work/tags/Pyenv/"/>
+    
+    <category term="Rclone" scheme="https://backup.meaqua.work/tags/Rclone/"/>
+    
+    <category term="Mariadb" scheme="https://backup.meaqua.work/tags/Mariadb/"/>
+    
+    <category term="Redis" scheme="https://backup.meaqua.work/tags/Redis/"/>
+    
+    <category term="Php" scheme="https://backup.meaqua.work/tags/Php/"/>
+    
+    <category term="Docker" scheme="https://backup.meaqua.work/tags/Docker/"/>
+    
+  </entry>
+  
+</feed>

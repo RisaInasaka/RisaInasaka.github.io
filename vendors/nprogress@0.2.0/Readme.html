@@ -1,0 +1,118 @@
+<h1 id="nprogress"><a class="markdownIt-Anchor" href="#nprogress"></a> NProgress</h1>
+<p>Slim progress bars for Ajax’y applications. Inspired by Google, YouTube, and<br />
+Medium.</p>
+<h2 id="installation"><a class="markdownIt-Anchor" href="#installation"></a> Installation</h2>
+<p>Add <a href="http://ricostacruz.com/nprogress/nprogress.js">nprogress.js</a> and <a href="http://ricostacruz.com/nprogress/nprogress.css">nprogress.css</a> to your project.</p>
+<pre class="highlight"><code class="html"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&#x27;nprogress.js&#x27;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span>
+<span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&#x27;stylesheet&#x27;</span> <span class="attr">href</span>=<span class="string">&#x27;nprogress.css&#x27;</span>/&gt;</span>
+</code></pre>
+<p>NProgress is available via <a href="http://bower.io/search/?q=nprogress">bower</a> and <a href="https://www.npmjs.org/package/nprogress">npm</a> and <a href="http://spmjs.io/package/nprogress">spm</a>.</p>
+<pre><code>$ bower install --save nprogress
+$ npm install --save nprogress
+</code></pre>
+<h2 id="basic-usage"><a class="markdownIt-Anchor" href="#basic-usage"></a> Basic usage</h2>
+<p>Simply call <code>start()</code> and <code>done()</code> to control the progress bar.</p>
+<pre class="highlight"><code class="js"><span class="title class_">NProgress</span>.<span class="title function_">start</span>();
+<span class="title class_">NProgress</span>.<span class="title function_">done</span>();
+</code></pre>
+<p>Using <a href="https://github.com/rails/turbolinks">Turbolinks</a> or similar? Ensure you’re using Turbolinks 1.3.0+, and use<br />
+this: (explained<br />
+<a href="https://github.com/rstacruz/nprogress/issues/8#issuecomment-23010560">here</a>)</p>
+<pre class="highlight"><code class="js">$(<span class="variable language_">document</span>).<span class="title function_">on</span>(<span class="string">&#x27;page:fetch&#x27;</span>,   <span class="keyword">function</span>(<span class="params"></span>) { <span class="title class_">NProgress</span>.<span class="title function_">start</span>(); });
+$(<span class="variable language_">document</span>).<span class="title function_">on</span>(<span class="string">&#x27;page:change&#x27;</span>,  <span class="keyword">function</span>(<span class="params"></span>) { <span class="title class_">NProgress</span>.<span class="title function_">done</span>(); });
+$(<span class="variable language_">document</span>).<span class="title function_">on</span>(<span class="string">&#x27;page:restore&#x27;</span>, <span class="keyword">function</span>(<span class="params"></span>) { <span class="title class_">NProgress</span>.<span class="title function_">remove</span>(); });
+</code></pre>
+<h2 id="ideas"><a class="markdownIt-Anchor" href="#ideas"></a> Ideas</h2>
+<ul>
+<li>
+<p>Add progress to your Ajax calls! Bind it to the jQuery <code>ajaxStart</code> and<br />
+<code>ajaxStop</code> events.</p>
+</li>
+<li>
+<p>Make a fancy loading bar even without Turbolinks/Pjax! Bind it to<br />
+<code>$(document).ready</code> and <code>$(window).load</code>.</p>
+</li>
+</ul>
+<h2 id="advanced-usage"><a class="markdownIt-Anchor" href="#advanced-usage"></a> Advanced usage</h2>
+<p><strong>Percentages:</strong> To set a progress percentage, call <code>.set(n)</code>, where <em>n</em> is a<br />
+number between <code>0..1</code>.</p>
+<pre class="highlight"><code class="js"><span class="title class_">NProgress</span>.<span class="title function_">set</span>(<span class="number">0.0</span>);     <span class="comment">// Sorta same as .start()</span>
+<span class="title class_">NProgress</span>.<span class="title function_">set</span>(<span class="number">0.4</span>);
+<span class="title class_">NProgress</span>.<span class="title function_">set</span>(<span class="number">1.0</span>);     <span class="comment">// Sorta same as .done()</span>
+</code></pre>
+<p><strong>Incrementing:</strong> To increment the progress bar, just use <code>.inc()</code>. This<br />
+increments it with a random amount. This will never get to 100%: use it for<br />
+every image load (or similar).</p>
+<pre class="highlight"><code class="js"><span class="title class_">NProgress</span>.<span class="title function_">inc</span>();
+</code></pre>
+<p>If you want to increment by a specific value, you can pass that as a parameter:</p>
+<pre class="highlight"><code class="js"><span class="title class_">NProgress</span>.<span class="title function_">inc</span>(<span class="number">0.2</span>);    <span class="comment">// This will get the current status value and adds 0.2 until status is 0.994</span>
+</code></pre>
+<p><strong>Force-done:</strong> By passing <code>true</code> to <code>done()</code>, it will show the progress bar<br />
+even if it’s not being shown. (The default behavior is that <em>.done()</em> will not<br />
+do anything if <em>.start()</em> isn’t called)</p>
+<pre class="highlight"><code class="js"><span class="title class_">NProgress</span>.<span class="title function_">done</span>(<span class="literal">true</span>);
+</code></pre>
+<p><strong>Get the status value:</strong> To get the status value, use <code>.status</code></p>
+<h2 id="configuration"><a class="markdownIt-Anchor" href="#configuration"></a> Configuration</h2>
+<h4 id="minimum"><a class="markdownIt-Anchor" href="#minimum"></a> <code>minimum</code></h4>
+<p>Changes the minimum percentage used upon starting. (default: <code>0.08</code>)</p>
+<pre class="highlight"><code class="js"><span class="title class_">NProgress</span>.<span class="title function_">configure</span>({ <span class="attr">minimum</span>: <span class="number">0.1</span> });
+</code></pre>
+<h4 id="template"><a class="markdownIt-Anchor" href="#template"></a> <code>template</code></h4>
+<p>You can change the markup using <code>template</code>. To keep the progress<br />
+bar working, keep an element with <code>role='bar'</code> in there. See the <a href="https://github.com/rstacruz/nprogress/blob/master/nprogress.js#L31">default template</a><br />
+for reference.</p>
+<pre class="highlight"><code class="js"><span class="title class_">NProgress</span>.<span class="title function_">configure</span>({
+  <span class="attr">template</span>: <span class="string">&quot;&lt;div class=&#x27;....&#x27;&gt;...&lt;/div&gt;&quot;</span>
+});
+</code></pre>
+<h4 id="easing-and-speed"><a class="markdownIt-Anchor" href="#easing-and-speed"></a> <code>easing</code> and <code>speed</code></h4>
+<p>Adjust animation settings using <em>easing</em> (a CSS easing string)<br />
+and <em>speed</em> (in ms). (default: <code>ease</code> and <code>200</code>)</p>
+<pre class="highlight"><code class="js"><span class="title class_">NProgress</span>.<span class="title function_">configure</span>({ <span class="attr">easing</span>: <span class="string">&#x27;ease&#x27;</span>, <span class="attr">speed</span>: <span class="number">500</span> });
+</code></pre>
+<h4 id="trickle"><a class="markdownIt-Anchor" href="#trickle"></a> <code>trickle</code></h4>
+<p>Turn off the automatic incrementing behavior by setting this to <code>false</code>. (default: <code>true</code>)</p>
+<pre class="highlight"><code class="js"><span class="title class_">NProgress</span>.<span class="title function_">configure</span>({ <span class="attr">trickle</span>: <span class="literal">false</span> });
+</code></pre>
+<h4 id="tricklerate-and-tricklespeed"><a class="markdownIt-Anchor" href="#tricklerate-and-tricklespeed"></a> <code>trickleRate</code> and <code>trickleSpeed</code></h4>
+<p>You can adjust the <em>trickleRate</em> (how much to increase per trickle) and<br />
+<em>trickleSpeed</em> (how often to trickle, in ms).</p>
+<pre class="highlight"><code class="js"><span class="title class_">NProgress</span>.<span class="title function_">configure</span>({ <span class="attr">trickleRate</span>: <span class="number">0.02</span>, <span class="attr">trickleSpeed</span>: <span class="number">800</span> });
+</code></pre>
+<h4 id="showspinner"><a class="markdownIt-Anchor" href="#showspinner"></a> <code>showSpinner</code></h4>
+<p>Turn off loading spinner by setting it to false. (default: <code>true</code>)</p>
+<pre class="highlight"><code class="js"><span class="title class_">NProgress</span>.<span class="title function_">configure</span>({ <span class="attr">showSpinner</span>: <span class="literal">false</span> });
+</code></pre>
+<h4 id="parent"><a class="markdownIt-Anchor" href="#parent"></a> <code>parent</code></h4>
+<p>specify this to change the parent container. (default: <code>body</code>)</p>
+<pre class="highlight"><code class="js"><span class="title class_">NProgress</span>.<span class="title function_">configure</span>({ <span class="attr">parent</span>: <span class="string">&#x27;#container&#x27;</span> });
+</code></pre>
+<h2 id="customization"><a class="markdownIt-Anchor" href="#customization"></a> Customization</h2>
+<p>Just edit <code>nprogress.css</code> to your liking. Tip: you probably only want to find<br />
+and replace occurrences of <code>#29d</code>.</p>
+<p>The included CSS file is pretty minimal… in fact, feel free to scrap it and<br />
+make your own!</p>
+<h2 id="resources"><a class="markdownIt-Anchor" href="#resources"></a> Resources</h2>
+<ul>
+<li><a href="http://www.usabilitypost.com/2013/08/19/new-ui-pattern-website-loading-bars/">New UI Pattern: Website Loading Bars</a> (<a href="http://usabilitypost.com">usabilitypost.com</a>)</li>
+</ul>
+<h2 id="support"><a class="markdownIt-Anchor" href="#support"></a> Support</h2>
+<p><strong>Bugs and requests</strong>: submit them through the project’s issues tracker.<br><br />
+<a href="https://github.com/rstacruz/nprogress/issues"><img src="http://img.shields.io/github/issues/rstacruz/nprogress.svg" alt="Issues" /></a></p>
+<p><strong>Questions</strong>: ask them at StackOverflow with the tag <em>nprogress</em>.<br><br />
+<a href="http://stackoverflow.com/questions/tagged/nprogress"><img src="http://img.shields.io/badge/stackoverflow-nprogress-brightgreen.svg" alt="StackOverflow" /></a></p>
+<p><strong>Chat</strong>: join us at <a href="http://gitter.im">gitter.im</a>.<br><br />
+<a href="https://gitter.im/rstacruz/nprogress">![Chat](http://img.shields.io/badge/gitter-rstacruz / nprogress-brightgreen.svg)</a></p>
+<h2 id="thanks"><a class="markdownIt-Anchor" href="#thanks"></a> Thanks</h2>
+<p><strong>NProgress</strong> © 2013-2014, Rico Sta. Cruz. Released under the <a href="http://mit-license.org/">MIT License</a>.<br><br />
+Authored and maintained by Rico Sta. Cruz with help from <a href="http://github.com/rstacruz/nprogress/contributors">contributors</a>.</p>
+<blockquote>
+<p><a href="http://ricostacruz.com">ricostacruz.com</a>  · <br />
+GitHub <a href="https://github.com/rstacruz">@rstacruz</a>  · <br />
+Twitter <a href="https://twitter.com/rstacruz">@rstacruz</a></p>
+</blockquote>
+<p><a href="http://travis-ci.org/rstacruz/nprogress"><img src="https://api.travis-ci.org/rstacruz/nprogress.svg?branch=master" alt="Status" /></a><br />
+<a href="https://npmjs.org/package/nprogress" title="View this project on npm"><img src="https://img.shields.io/npm/v/nprogress.png" alt="npm version" /></a><br />
+<a href="http://spmjs.io/package/nprogress"><img src="http://spmjs.io/badge/nprogress" alt="spm package" /></a></p>

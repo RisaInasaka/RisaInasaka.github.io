@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  
+  
+  <title>Debian 11 VPS deployment | ねこの世界</title>
+  <meta name="author" content="稲坂梨彩" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Debian, Docker, LNMP, Mariadb, Nginx, Php, Pyenv, Rclone, Redis, VPS" />
+  
+  <meta name="description" content="Do NOT use BT Panel">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Debian 11 VPS deployment">
+<meta property="og:url" content="https://backup.meaqua.work/0e679178cb94/">
+<meta property="og:site_name" content="ねこの世界">
+<meta property="og:description" content="Do NOT use BT Panel">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-06-09T10:23:29.000Z">
+<meta property="article:modified_time" content="2022-07-22T16:58:25.236Z">
+<meta property="article:author" content="稲坂梨彩">
+<meta property="article:tag" content="LNMP">
+<meta property="article:tag" content="VPS">
+<meta property="article:tag" content="Debian">
+<meta property="article:tag" content="Nginx">
+<meta property="article:tag" content="Pyenv">
+<meta property="article:tag" content="Rclone">
+<meta property="article:tag" content="Mariadb">
+<meta property="article:tag" content="Redis">
+<meta property="article:tag" content="Php">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+  <link rel="alternate" href="https://backup.meaqua.work/atom.xml" type="application/atom+xml">
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" media="all"></script>
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-color-dark.min.css" media="(prefers-color-scheme: dark)"></script>
+    <script src="/js/kr-dark.min.js"></script>
+  
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night.min.css" media="all"></script>
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="all"></script>
+  <link rel="stylesheet" id="nprogress-css" href="/vendors/nprogress@0.2.0/nprogress.css" media="all"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/aplayer@1.10.1/dist/APlayer.min.css"></script>
+  
+  
+    <link rel="stylesheet" href="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"></script>
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="/vendors/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="/vendors/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('https://static.meaqua.work/img/banner.webp');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('https://static.meaqua.work/img/background.webp');
+        }
+      }
+    
+  </style>
+  
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://unpkg.com/katex/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.2.0"></head>
+
+
+    <body class="custom-background"><!-- hexo injector body_begin start --><canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas><script defer src="https://unpkg.com/animejs/lib/anime.min.js"></script><script defer src="https://static.inasaka.eu.org/js/fireworks.min.js"></script><!-- hexo injector body_begin end -->
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li>
+                                            
+                                                <a href="/">
+                                            
+                                                
+                                                    <i class="fa fa-home"></i>
+                                                
+                                                首页
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a href="/archives/">
+                                            
+                                                
+                                                    <i class="fa fa-file"></i>
+                                                
+                                                档案馆
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a target="_blank" rel="noopener" href="https://drive.inasaka.eu.org">
+                                            
+                                                
+                                                    <i class="fa fa-hdd-o"></i>
+                                                
+                                                文件存储
+                                            </a>
+                                            
+                                        </li>
+                                    
+                                        <li>
+                                            
+                                                <a>
+                                            
+                                                
+                                                    <i class="fa fa-link"></i>
+                                                
+                                                备用连接
+                                            </a>
+                                            
+                                                <ul class="sub-menu">
+                                                    
+                                                        <li>
+                                                            <a target="_blank" rel="noopener" href="https://meaqua-work.bitbucket.io">
+                                                                
+                                                                Bitbucket Pages
+                                                            </a>
+                                                        </li>
+                                                    
+                                                        <li>
+                                                            <a target="_blank" rel="noopener" href="https://meaqua-work.pages.dev">
+                                                                
+                                                                Cloudflare Pages (Main)
+                                                            </a>
+                                                        </li>
+                                                    
+                                                        <li>
+                                                            <a target="_blank" rel="noopener" href="https://meaqua-work.web.app">
+                                                                
+                                                                Firebase Hosting
+                                                            </a>
+                                                        </li>
+                                                    
+                                                        <li>
+                                                            <a target="_blank" rel="noopener" href="https://risainasaka.github.io">
+                                                                
+                                                                Github Pages
+                                                            </a>
+                                                        </li>
+                                                    
+                                                        <li>
+                                                            <a target="_blank" rel="noopener" href="https://meaqua.gitlab.io">
+                                                                
+                                                                Gitlab Pages
+                                                            </a>
+                                                        </li>
+                                                    
+                                                        <li>
+                                                            <a target="_blank" rel="noopener" href="https://meaqua.herokuapp.com">
+                                                                
+                                                                Heroku
+                                                            </a>
+                                                        </li>
+                                                    
+                                                        <li>
+                                                            <a target="_blank" rel="noopener" href="https://meaqua.netlify.app">
+                                                                
+                                                                Netlify
+                                                            </a>
+                                                        </li>
+                                                    
+                                                        <li>
+                                                            <a target="_blank" rel="noopener" href="https://meaqua.onrender.com">
+                                                                
+                                                                Render
+                                                            </a>
+                                                        </li>
+                                                    
+                                                        <li>
+                                                            <a target="_blank" rel="noopener" href="https://meaqua.surge.sh">
+                                                                
+                                                                Surge
+                                                            </a>
+                                                        </li>
+                                                    
+                                                        <li>
+                                                            <a target="_blank" rel="noopener" href="https://meaqua-work.vercel.app">
+                                                                
+                                                                Vercel
+                                                            </a>
+                                                        </li>
+                                                    
+                                                        <li>
+                                                            <a target="_blank" rel="noopener" href="https://meaqua.4everland.app">
+                                                                
+                                                                4everland
+                                                            </a>
+                                                        </li>
+                                                    
+                                                </ul>
+                                            
+                                        </li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">ねこの世界</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>ねこの世界</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    
+    <link itemprop="mainEntityOfPage" href="https://backup.meaqua.work/0e679178cb94/">
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center" itemprop="name headline">Debian 11 VPS deployment</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><time datetime="2022-06-09T10:23:29.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2022-06-09</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">稲坂梨彩</span>
+                </li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~22.88K
+                    
+                    字
+                </li>
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1658509105236"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+            
+            <hr />
+            <div itemprop="articleBody"><p>Do NOT use BT Panel</p>
+<span id="more"></span>
+<h2 id="warning"><a class="markdownIt-Anchor" href="#warning"></a> Warning</h2>
+<div class="alert alert-danger"><div class="icon"><i class="fa fa-exclamation"></i></div><div class="text"><p>Do NOT use BT Panel due to security &amp; privacy concern.</p>
+</div></div>
+<div class="panel panel-danger">
+    <div class="panel-title">Why shouldn't use BT Panel</div>
+    <div class="panel-body">
+        <p>From: <a target="_blank" rel="noopener" href="https://www.bt.cn/new/agreement_privacy.html">宝塔隐私声明 - 宝塔面板</a></p>
+<blockquote>
+<p>1、 我们将收集哪些个人信息<br />
+我们有两种信息收集方式：<br />
+1.1 您向我们提供的信息：<br />
+您在注册堡塔账户时，可能需要您向我们提供您的个人信息，例如：您的姓名、电子邮箱地址、手机号码、证件号码等。<br />
+1.2 我们在您使用我们产品和服务的过程中收集的信息：<br />
+可能需要您提供您的通讯地址、收/付款账号等。<br />
+必要时我们还会收集与产品使用相关的信息，例如IP 地址、Cookie、位置信息、产品制造商、产品型号、产品唯一标示符和设备数据等信息。</p>
+</blockquote>
+<p>Related posts:</p>
+<p><a target="_blank" rel="noopener" href="https://hostloc.com/thread-1015644-1-1.html">宝塔后门接口-美国VPS综合讨论-全球主机交流论坛 - Powered by Discuz!</a><br />
+<a target="_blank" rel="noopener" href="https://hostloc.com/thread-1015562-1-1.html">宝塔国内版已知收集的隐私信息-美国VPS综合讨论-全球主机交流论坛 - Powered by Discuz!</a></p>
+
+    </div>
+    </div>
+<h2 id="pre-work"><a class="markdownIt-Anchor" href="#pre-work"></a> Pre work</h2>
+<p>Name: <code>&#123;location&#125;</code><br />
+TemplateOS: <code>centos 7</code><br />
+TargetOS: <code>Debian 11 bullseye</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">wget https://gcore.jsdelivr.net/gh/MeowLove/Network-Reinstall-System-Modify/CoreShell/Core_Install_v3.1.sh</span><br><span class="line">bash Core_Install_v3.1.sh -d bullseye -v 64 -p <span class="string">&#x27;XCLY_01130504&#x27;</span> -a --mirror <span class="string">&#x27;http://mirrors.tencentyun.com/debian&#x27;</span> -firmware</span><br><span class="line"><span class="comment"># bash Core_Install_v3.1.sh -d bullseye -v 64 -p &#x27;XCLY_01130504&#x27; -a -firmware</span></span><br></pre></td></tr></table></figure>
+<h2 id="first-boot"><a class="markdownIt-Anchor" href="#first-boot"></a> First boot</h2>
+<p><code>/etc/motd</code> : clear all text<br />
+<code>tcpx.sh</code> : choose 22 &amp; 23</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">nano /etc/motd</span><br><span class="line">nano /etc/ssh/sshd_config</span><br><span class="line">apt update</span><br><span class="line">apt install ufw socat screen git htop</span><br><span class="line">ufw default deny incoming</span><br><span class="line">ufw default allow outgoing</span><br><span class="line">ufw allow OpenSSH</span><br><span class="line">ufw allow <span class="string">&quot;WWW Full&quot;</span></span><br><span class="line">ufw <span class="built_in">enable</span></span><br><span class="line">apt install ca-certificates wget -y &amp;&amp; update-ca-certificates</span><br><span class="line">wget -O tcpx.sh <span class="string">&quot;https://gcore.jsdelivr.net/gh/ylx2016/Linux-NetSpeed/tcpx.sh&quot;</span> &amp;&amp; <span class="built_in">chmod</span> +x tcpx.sh &amp;&amp; ./tcpx.sh</span><br><span class="line">nano /etc/network/interfaces</span><br><span class="line">nano /etc/resolv.conf</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /etc/ssh/sshd_config</span></span><br><span class="line">LogLevel INFO</span><br><span class="line">MaxAuth 4</span><br><span class="line">PasswordAuthentication no</span><br><span class="line">PermitEmptyPasswords no</span><br><span class="line">ClientAliveInterval 600</span><br><span class="line">ClientAliveCountMax 2</span><br><span class="line">Protocol 2</span><br><span class="line"></span><br><span class="line"><span class="comment"># /etc/network/interfaces</span></span><br><span class="line">auto ens5</span><br><span class="line">iface ens5 inet static</span><br><span class="line">    address &#123;address&#125;</span><br><span class="line">    netmask &#123;netmask&#125;</span><br><span class="line">    gateway &#123;gateway&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># /etc/resolv.conf</span></span><br><span class="line">nameserver 1.1.1.1</span><br><span class="line">nameserver 1.0.0.1</span><br></pre></td></tr></table></figure>
+<h2 id="second-boot"><a class="markdownIt-Anchor" href="#second-boot"></a> Second boot</h2>
+<p>Use http repositories first</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">nano /etc/apt/sources.list</span><br><span class="line">apt update</span><br><span class="line">apt install apt-transport-https ca-certificates</span><br><span class="line">apt upgrade -y</span><br><span class="line">dpkg-reconfigure tzdata</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /etc/apt/sources.list</span></span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye main contrib non-free</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-updates main contrib non-free</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/debian/ bullseye-backports main contrib non-free</span><br><span class="line">deb https://mirrors.tuna.tsinghua.edu.cn/debian-security bullseye-security main contrib non-free</span><br><span class="line"><span class="comment"># deb http://deb.debian.org/debian/ bullseye main contrib non-free</span></span><br><span class="line"><span class="comment"># deb http://deb.debian.org/debian/ bullseye-updates main contrib non-free</span></span><br><span class="line"><span class="comment"># deb http://deb.debian.org/debian/ bullseye-backports main contrib non-free</span></span><br><span class="line"><span class="comment"># deb http://deb.debian.org/debian-security bullseye-security main contrib non-free</span></span><br></pre></td></tr></table></figure>
+<h2 id="software"><a class="markdownIt-Anchor" href="#software"></a> Software</h2>
+<h3 id="nginx"><a class="markdownIt-Anchor" href="#nginx"></a> Nginx</h3>
+<p><code>/usr/share/nginx/html</code> : <a target="_blank" rel="noopener" href="https://drive.inasaka.eu.org/api/raw/?path=/Scripts/website.tar.gz">Download</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">apt install curl gnupg2 ca-certificates lsb-release debian-archive-keyring</span><br><span class="line">curl https://nginx.org/keys/nginx_signing.key | gpg --dearmor \</span><br><span class="line">    | <span class="built_in">tee</span> /usr/share/keyrings/nginx-archive-keyring.gpg &gt;/dev/null</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;deb [signed-by=/usr/share/keyrings/nginx-archive-keyring.gpg] \</span></span><br><span class="line"><span class="string">    http://nginx.org/packages/mainline/debian `lsb_release -cs` nginx&quot;</span> \</span><br><span class="line">    | <span class="built_in">tee</span> /etc/apt/sources.list.d/nginx.list</span><br><span class="line"><span class="built_in">echo</span> -e <span class="string">&quot;Package: *\nPin: origin nginx.org\nPin: release o=nginx\nPin-Priority: 900\n&quot;</span> \</span><br><span class="line">    | <span class="built_in">tee</span> /etc/apt/preferences.d/99nginx</span><br><span class="line">apt update</span><br><span class="line">apt install nginx -y</span><br><span class="line">systemctl start nginx</span><br><span class="line">systemctl <span class="built_in">enable</span> nginx</span><br><span class="line">nano /etc/nginx/nginx.conf</span><br><span class="line">nano /etc/nginx/conf.d/default.conf</span><br><span class="line">curl https://ssl-config.mozilla.org/ffdhe4096.txt &gt; /etc/ssl/ffdhe4096.pem</span><br><span class="line">nano /etc/nginx/conf.d/&#123;website&#125;.conf</span><br><span class="line">curl https://get.acme.sh | sh -s email=&#123;email&#125;</span><br><span class="line"><span class="built_in">exec</span> <span class="string">&quot;<span class="variable">$SHELL</span>&quot;</span></span><br><span class="line"><span class="built_in">export</span> CF_Token=<span class="string">&quot;&#123;CF_Token&#125;&quot;</span></span><br><span class="line"><span class="built_in">export</span> CF_Zone_ID=<span class="string">&quot;&#123;CF_Zone_ID&#125;&quot;</span></span><br><span class="line"><span class="built_in">export</span> CF_Account_ID=<span class="string">&quot;&#123;CF_Account_ID&#125;&quot;</span></span><br><span class="line">acme.sh --issue --dns dns_cf -d &#123;website&#125; --dnssleep 300</span><br><span class="line"><span class="comment"># acme.sh --issue --dns dns_cf -d &#123;website&#125;</span></span><br><span class="line">acme.sh --install-cert -d &#123;website&#125; \</span><br><span class="line">    --key-file       /etc/ssl/&#123;website&#125;.key  \</span><br><span class="line">    --fullchain-file /etc/ssl/&#123;website&#125;.crt \</span><br><span class="line">    --reloadcmd     <span class="string">&quot;service nginx force-reload&quot;</span></span><br><span class="line"><span class="built_in">chown</span> -R nginx:nginx /usr/share/nginx/html</span><br><span class="line">find /usr/share/nginx/html/ -<span class="built_in">type</span> d -<span class="built_in">exec</span> <span class="built_in">chmod</span> 750 &#123;&#125; \;</span><br><span class="line">find /usr/share/nginx/html/ -<span class="built_in">type</span> f -<span class="built_in">exec</span> <span class="built_in">chmod</span> 640 &#123;&#125; \;</span><br></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /etc/nginx/nginx.conf</span></span><br><span class="line"><span class="attribute">user</span> nginx;</span><br><span class="line"><span class="attribute">worker_processes</span> auto;</span><br><span class="line"><span class="attribute">error_log</span> /var/log/nginx/<span class="literal">error</span>.log <span class="literal">notice</span>;</span><br><span class="line"><span class="attribute">pid</span> /var/run/nginx.pid;</span><br><span class="line"><span class="attribute">worker_rlimit_nofile</span> <span class="number">51200</span>;</span><br><span class="line"><span class="section">events</span> &#123;</span><br><span class="line">    <span class="attribute">use</span> <span class="literal">epoll</span>;</span><br><span class="line">    <span class="attribute">worker_connections</span> <span class="number">51200</span>;</span><br><span class="line">    <span class="attribute">multi_accept</span> <span class="literal">on</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/mime.types;</span><br><span class="line">    <span class="attribute">default_type</span>  application/octet-stream;</span><br><span class="line">    <span class="attribute">server_names_hash_bucket_size</span> <span class="number">512</span>;</span><br><span class="line">    <span class="attribute">client_header_buffer_size</span> <span class="number">32k</span>;</span><br><span class="line">    <span class="attribute">large_client_header_buffers</span> <span class="number">4</span> <span class="number">32k</span>;</span><br><span class="line">    <span class="attribute">client_max_body_size</span> <span class="number">50m</span>;</span><br><span class="line">    <span class="attribute">sendfile</span>   <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">tcp_nopush</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">keepalive_timeout</span> <span class="number">60</span>;</span><br><span class="line">    <span class="attribute">tcp_nodelay</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">gzip</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">gzip_min_length</span>  <span class="number">1k</span>;</span><br><span class="line">    <span class="attribute">gzip_buffers</span>     <span class="number">4</span> <span class="number">16k</span>;</span><br><span class="line">    <span class="attribute">gzip_http_version</span> <span class="number">1</span>.<span class="number">1</span>;</span><br><span class="line">    <span class="attribute">gzip_comp_level</span> <span class="number">2</span>;</span><br><span class="line">    <span class="attribute">gzip_types</span>     text/plain application/javascript application/x-javascript text/javascript text/css application/xml;</span><br><span class="line">    <span class="attribute">gzip_vary</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">gzip_proxied</span>   expired <span class="literal">no</span>-cache <span class="literal">no</span>-store private auth;</span><br><span class="line">    <span class="attribute">gzip_disable</span>   <span class="string">&quot;MSIE [1-6]\.&quot;</span>;</span><br><span class="line">    <span class="attribute">limit_conn_zone</span> <span class="variable">$binary_remote_addr</span> zone=perip:<span class="number">10m</span>;</span><br><span class="line">    <span class="attribute">limit_conn_zone</span> <span class="variable">$server_name</span> zone=perserver:<span class="number">10m</span>;</span><br><span class="line">    <span class="attribute">server_tokens</span> <span class="literal">off</span>;</span><br><span class="line">    <span class="attribute">access_log</span> <span class="literal">off</span>;</span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/conf.d/<span class="regexp">*.conf</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># /etc/nginx/conf.d/default.conf</span></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> <span class="number">80</span> default_server;</span><br><span class="line">    <span class="attribute">server_name</span> _;</span><br><span class="line">    <span class="attribute">index</span> index.html;</span><br><span class="line">    <span class="attribute">root</span> /usr/share/nginx/html;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># /etc/nginx/conf.d/&#123;website&#125;.conf</span></span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> [::]:<span class="number">80</span>;</span><br><span class="line">    <span class="attribute">listen</span>      <span class="number">80</span>;</span><br><span class="line">    <span class="section">server_name</span> &#123;website&#125;;</span><br><span class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^</span> https://<span class="variable">$host</span><span class="variable">$request_uri</span>? <span class="literal">permanent</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span> [::]:<span class="number">443</span> ssl http2 default_server;</span><br><span class="line">    <span class="attribute">listen</span>      <span class="number">443</span> ssl http2 default_server;</span><br><span class="line">    <span class="section">server_name</span> &#123;website&#125;;</span><br><span class="line">    <span class="attribute">index</span> index.php index.html index.htm default.php default.htm default.html;</span><br><span class="line">    <span class="attribute">root</span> /usr/share/nginx/html;</span><br><span class="line">    <span class="attribute">ssl_certificate</span> /etc/ssl/&#123;website&#125;.crt;</span><br><span class="line">    <span class="attribute">ssl_certificate_key</span> /etc/ssl/&#123;website&#125;.key;</span><br><span class="line">    <span class="attribute">charset</span> utf-<span class="number">8</span>;</span><br><span class="line">    <span class="attribute">add_header</span> Strict-Transport-Security <span class="string">&#x27;max-age=31536000; includeSubDomains; preload&#x27;</span> always;</span><br><span class="line">    <span class="attribute">ssl_dhparam</span> /etc/ssl/ffdhe4096.pem;</span><br><span class="line">    <span class="attribute">ssl_protocols</span> TLSv1.<span class="number">3</span> TLSv1.<span class="number">2</span>;</span><br><span class="line">    <span class="attribute">ssl_prefer_server_ciphers</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">ssl_ecdh_curve</span> secp521r1:secp384r1;</span><br><span class="line">    <span class="attribute">ssl_ciphers</span> EECDH+AESGCM:EECDH+AES256;</span><br><span class="line">    <span class="attribute">ssl_session_cache</span> shared:TLS:<span class="number">2m</span>;</span><br><span class="line">    <span class="attribute">ssl_buffer_size</span> <span class="number">4k</span>;</span><br><span class="line">    <span class="attribute">ssl_stapling</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">ssl_stapling_verify</span> <span class="literal">on</span>;</span><br><span class="line">    <span class="attribute">resolver</span> <span class="number">1.1.1.1</span> <span class="number">1.0.0.1</span> [<span class="number">2606</span>:<span class="number">4700</span>:<span class="number">4700</span>::<span class="number">1111</span>] [<span class="number">2606</span>:<span class="number">4700</span>:<span class="number">4700</span>::<span class="number">1001</span>]; <span class="comment"># Cloudflare  </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="pyenv-pyenv-virtualenv"><a class="markdownIt-Anchor" href="#pyenv-pyenv-virtualenv"></a> Pyenv &amp; Pyenv-virtualenv</h3>
+<p>Recommended Python version: <code>3.9.13</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">apt update; apt install make build-essential libssl-dev zlib1g-dev \</span><br><span class="line">    libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \</span><br><span class="line">    libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/pyenv/pyenv.git ~/.pyenv</span><br><span class="line"><span class="built_in">cd</span> ~/.pyenv &amp;&amp; src/configure &amp;&amp; make -C src</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export PYENV_ROOT=&quot;$HOME/.pyenv&quot;&#x27;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;command -v pyenv &gt;/dev/null || export PATH=&quot;$PYENV_ROOT/bin:$PATH&quot;&#x27;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;eval &quot;$(pyenv init -)&quot;&#x27;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;export PYENV_ROOT=&quot;$HOME/.pyenv&quot;&#x27;</span> &gt;&gt; ~/.profile</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;command -v pyenv &gt;/dev/null || export PATH=&quot;$PYENV_ROOT/bin:$PATH&quot;&#x27;</span> &gt;&gt; ~/.profile</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;eval &quot;$(pyenv init -)&quot;&#x27;</span> &gt;&gt; ~/.profile</span><br><span class="line"><span class="built_in">exec</span> <span class="string">&quot;<span class="variable">$SHELL</span>&quot;</span></span><br><span class="line">pyenv install &#123;version&#125;</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;eval &quot;$(pyenv virtualenv-init -)&quot;&#x27;</span> &gt;&gt; ~/.bashrc</span><br><span class="line"><span class="built_in">exec</span> <span class="string">&quot;<span class="variable">$SHELL</span>&quot;</span></span><br><span class="line">pyenv virtualenv &#123;version&#125; venv</span><br><span class="line">pyenv activate venv</span><br><span class="line">pip install -U pip</span><br><span class="line">pip install wheel</span><br><span class="line">pyenv deactivate</span><br></pre></td></tr></table></figure>
+<h3 id="rclone"><a class="markdownIt-Anchor" href="#rclone"></a> Rclone</h3>
+<p>Read <a target="_blank" rel="noopener" href="https://rclone.org/onedrive/">Rclone</a> to generate <code>client_id</code> and <code>client_secret</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">curl https://rclone.org/install.sh | bash</span><br><span class="line">rclone config</span><br><span class="line">rclone authorize onedrive &#123;client_id&#125; &#123;client_secret&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="mariadb"><a class="markdownIt-Anchor" href="#mariadb"></a> Mariadb</h3>
+<p>Recommended version: <code>10.8</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">apt -y install curl software-properties-common gnupg2</span><br><span class="line">curl -o /etc/apt/trusted.gpg.d/mariadb_release_signing_key.asc <span class="string">&#x27;https://mariadb.org/mariadb_release_signing_key.asc&#x27;</span></span><br><span class="line">sh -c <span class="string">&quot;echo &#x27;deb https://mirror.rackspace.com/mariadb/repo/10.8/debian bullseye main&#x27; &gt;&gt;/etc/apt/sources.list&quot;</span></span><br><span class="line">apt update</span><br><span class="line">apt install mariadb-server</span><br><span class="line">mariadb-secure-installation</span><br><span class="line">systemctl <span class="built_in">enable</span> mariadb</span><br><span class="line">nano /etc/mysql/mariadb.cnf</span><br><span class="line">systemctl restart mariadb</span><br><span class="line">mysql</span><br></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /etc/mysql/mariadb.cnf</span></span><br><span class="line"><span class="section">[mysqld]</span></span><br><span class="line"><span class="attr">binlog_cache_size</span> = <span class="number">64</span>K</span><br><span class="line"><span class="attr">thread_stack</span> = <span class="number">256</span>K</span><br><span class="line"><span class="attr">join_buffer_size</span> = <span class="number">1024</span>K</span><br><span class="line"><span class="attr">query_cache_type</span> = <span class="number">1</span></span><br><span class="line"><span class="attr">max_heap_table_size</span> = <span class="number">64</span>M</span><br><span class="line"><span class="attr">default_storage_engine</span> = InnoDB</span><br><span class="line"><span class="attr">performance_schema_max_table_instances</span> = <span class="number">400</span></span><br><span class="line"><span class="attr">table_definition_cache</span> = <span class="number">400</span></span><br><span class="line">skip-external-locking</span><br><span class="line"><span class="attr">key_buffer_size</span> = <span class="number">128</span>M</span><br><span class="line"><span class="attr">max_allowed_packet</span> = <span class="number">1</span>G</span><br><span class="line"><span class="attr">table_open_cache</span> = <span class="number">128</span></span><br><span class="line"><span class="attr">sort_buffer_size</span> = <span class="number">768</span>K</span><br><span class="line"><span class="attr">net_buffer_length</span> = <span class="number">4</span>K</span><br><span class="line"><span class="attr">read_buffer_size</span> = <span class="number">768</span>K</span><br><span class="line"><span class="attr">read_rnd_buffer_size</span> = <span class="number">512</span>K</span><br><span class="line"><span class="attr">myisam_sort_buffer_size</span> = <span class="number">8</span>M</span><br><span class="line"><span class="attr">thread_cache_size</span> = <span class="number">64</span></span><br><span class="line"><span class="attr">query_cache_size</span> = <span class="number">64</span>M</span><br><span class="line"><span class="attr">tmp_table_size</span> = <span class="number">64</span>M</span><br><span class="line"><span class="attr">sql-mode</span>=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES</span><br><span class="line"><span class="attr">explicit_defaults_for_timestamp</span> = <span class="literal">true</span></span><br><span class="line"><span class="attr">max_connections</span> = <span class="number">100</span></span><br><span class="line"><span class="attr">max_connect_errors</span> = <span class="number">100</span></span><br><span class="line"><span class="attr">open_files_limit</span> = <span class="number">65535</span></span><br><span class="line"><span class="attr">log_bin</span>=/var/log/mysql/mysql-bin.log</span><br><span class="line"><span class="attr">binlog_format</span>=mixed</span><br><span class="line"><span class="attr">server-id</span> = <span class="number">1</span></span><br><span class="line"><span class="attr">expire_logs_days</span> = <span class="number">10</span></span><br><span class="line"><span class="attr">slow_query_log</span>=<span class="number">1</span></span><br><span class="line"><span class="attr">long_query_time</span>=<span class="number">3</span></span><br><span class="line"><span class="attr">innodb_data_file_path</span> = ibdata1:<span class="number">10</span>M:autoextend</span><br><span class="line"><span class="attr">innodb_buffer_pool_size</span> = <span class="number">256</span>M</span><br><span class="line"><span class="attr">innodb_log_file_size</span> = <span class="number">64</span>M</span><br><span class="line"><span class="attr">innodb_log_buffer_size</span> = <span class="number">16</span>M</span><br><span class="line"><span class="attr">innodb_flush_log_at_trx_commit</span> = <span class="number">1</span></span><br><span class="line"><span class="attr">innodb_lock_wait_timeout</span> = <span class="number">50</span></span><br><span class="line"><span class="attr">innodb_max_dirty_pages_pct</span> = <span class="number">90</span></span><br><span class="line"><span class="attr">innodb_read_io_threads</span> = <span class="number">1</span></span><br><span class="line"><span class="attr">innodb_write_io_threads</span> = <span class="number">2</span></span><br><span class="line"><span class="section">[mysqldump]</span></span><br><span class="line">quick</span><br><span class="line"><span class="attr">max_allowed_packet</span> = <span class="number">500</span>M</span><br><span class="line"><span class="section">[mysql]</span></span><br><span class="line">no-auto-rehash</span><br><span class="line"><span class="section">[myisamchk]</span></span><br><span class="line"><span class="attr">key_buffer_size</span> = <span class="number">32</span>M</span><br><span class="line"><span class="attr">sort_buffer_size</span> = <span class="number">768</span>K</span><br><span class="line"><span class="attr">read_buffer</span> = <span class="number">2</span>M</span><br><span class="line"><span class="attr">write_buffer</span> = <span class="number">2</span>M</span><br><span class="line"><span class="section">[mysqlhotcopy]</span></span><br><span class="line">interactive-timeout</span><br><span class="line">!includedir /etc/mysql/conf.d/</span><br><span class="line">!includedir /etc/mysql/mariadb.conf.d/</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* mysql */</span></span><br><span class="line"><span class="keyword">create</span> database &#123;database&#125; <span class="keyword">default</span> <span class="type">character</span> <span class="keyword">set</span> utf8mb4 <span class="keyword">collate</span> utf8mb4_unicode_ci;</span><br><span class="line"><span class="keyword">create</span> <span class="keyword">user</span> <span class="string">&#x27;&#123;user&#125;&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span> identified <span class="keyword">by</span> <span class="string">&#x27;&#123;password&#125;&#x27;</span>;</span><br><span class="line"><span class="keyword">grant</span> <span class="keyword">all</span> <span class="keyword">on</span> &#123;database&#125;.<span class="operator">*</span> <span class="keyword">to</span> <span class="string">&#x27;&#123;user&#125;&#x27;</span>@<span class="string">&#x27;localhost&#x27;</span>;</span><br><span class="line">flush privileges;</span><br><span class="line">exit;</span><br></pre></td></tr></table></figure>
+<h3 id="redis"><a class="markdownIt-Anchor" href="#redis"></a> Redis</h3>
+<p>Recommended version: <code>7.0</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">nano /etc/sysctl.conf</span><br><span class="line">sysctl -p</span><br><span class="line">curl -fsSL https://packages.redis.io/gpg | gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb <span class="subst">$(lsb_release -cs)</span> main&quot;</span> | <span class="built_in">tee</span> /etc/apt/sources.list.d/redis.list</span><br><span class="line">apt install redis</span><br><span class="line">nano /etc/redis/redis.conf</span><br><span class="line">systemctl restart redis-server</span><br><span class="line">systemctl <span class="built_in">enable</span> redis-server</span><br></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /etc/sysctl.conf</span></span><br><span class="line"><span class="attr">vm.overcommit_memory</span> = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># /etc/redis/redis.conf</span></span><br><span class="line">bind 127.0.0.1</span><br><span class="line">protected-mode yes</span><br><span class="line">port 6379</span><br><span class="line">tcp-backlog 511</span><br><span class="line">timeout 0</span><br><span class="line">tcp-keepalive 300</span><br><span class="line">supervised auto</span><br><span class="line">pidfile /run/redis/redis-server.pid</span><br><span class="line">loglevel notice</span><br><span class="line">logfile /var/log/redis/redis-server.log</span><br><span class="line">databases 16</span><br><span class="line">proc-title-template &quot;&#123;title&#125; &#123;listen-addr&#125; &#123;server-mode&#125;&quot;</span><br><span class="line">always-show-logo yes</span><br><span class="line">save 900 1</span><br><span class="line">save 300 10</span><br><span class="line">save 60 10000</span><br><span class="line">stop-writes-on-bgsave-error yes</span><br><span class="line">rdbcompression yes</span><br><span class="line">rdbchecksum yes</span><br><span class="line">dbfilename dump.rdb</span><br><span class="line">dir /var/lib/redis</span><br><span class="line">rdb-del-sync-files no</span><br><span class="line">replica-serve-stale-data yes</span><br><span class="line">replica-read-only yes</span><br><span class="line">repl-diskless-sync no</span><br><span class="line">repl-diskless-sync-delay 5</span><br><span class="line">repl-diskless-sync-max-replicas 0</span><br><span class="line">repl-diskless-load disabled</span><br><span class="line">repl-disable-tcp-nodelay no</span><br><span class="line">replica-priority 100</span><br><span class="line">lazyfree-lazy-eviction no</span><br><span class="line">lazyfree-lazy-expire no</span><br><span class="line">lazyfree-lazy-server-del no</span><br><span class="line">replica-lazy-flush no</span><br><span class="line">lazyfree-lazy-user-del no</span><br><span class="line">lazyfree-lazy-user-flush no</span><br><span class="line">oom-score-adj no</span><br><span class="line">oom-score-adj-values 0 200 800</span><br><span class="line">disable-thp yes</span><br><span class="line">appendonly no</span><br><span class="line">appendfilename &quot;appendonly.aof&quot;</span><br><span class="line">appenddirname &quot;appendonlydir&quot;</span><br><span class="line">appendfsync everysec</span><br><span class="line">no-appendfsync-on-rewrite no</span><br><span class="line">acllog-max-len 128</span><br><span class="line">auto-aof-rewrite-percentage 100</span><br><span class="line">auto-aof-rewrite-min-size 64mb</span><br><span class="line">aof-load-truncated yes</span><br><span class="line">aof-use-rdb-preamble yes</span><br><span class="line">aof-timestamp-enabled no</span><br><span class="line">lua-time-limit 5000</span><br><span class="line">slowlog-log-slower-than 10000</span><br><span class="line">slowlog-max-len 128</span><br><span class="line">latency-monitor-threshold 0</span><br><span class="line">notify-keyspace-events &quot;&quot;</span><br><span class="line">hash-max-ziplist-entries 512</span><br><span class="line">hash-max-ziplist-value 64</span><br><span class="line">list-max-ziplist-size -2</span><br><span class="line">list-compress-depth 0</span><br><span class="line">set-max-intset-entries 512</span><br><span class="line">zset-max-ziplist-entries 128</span><br><span class="line">zset-max-ziplist-value 64</span><br><span class="line">hll-sparse-max-bytes 3000</span><br><span class="line">stream-node-max-bytes 4096</span><br><span class="line">stream-node-max-entries 100</span><br><span class="line">activerehashing yes</span><br><span class="line">client-output-buffer-limit normal 0 0 0</span><br><span class="line">client-output-buffer-limit replica 256mb 64mb 60</span><br><span class="line">client-output-buffer-limit pubsub 32mb 8mb 60</span><br><span class="line">hz 10</span><br><span class="line">dynamic-hz yes</span><br><span class="line">aof-rewrite-incremental-fsync yes</span><br><span class="line">rdb-save-incremental-fsync yes</span><br><span class="line">jemalloc-bg-thread yes</span><br></pre></td></tr></table></figure>
+<h3 id="php"><a class="markdownIt-Anchor" href="#php"></a> Php</h3>
+<p>Recommended version: <code>8.1</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;deb https://packages.sury.org/php/ <span class="subst">$(lsb_release -sc)</span> main&quot;</span> | <span class="built_in">tee</span> /etc/apt/sources.list.d/sury-php.list</span><br><span class="line">wget -qO - https://packages.sury.org/php/apt.gpg | apt-key add -</span><br><span class="line">apt update</span><br><span class="line">apt install php8.1-fpm php8.1-mysql php8.1-&#123;bcmath,fpm,xml,mysql,zip,intl,ldap,gd,cli,bz2,curl,mbstring,pgsql,opcache,soap,cgi,xmlrpc,mcrypt,imagick,redis&#125;</span><br><span class="line">nano /etc/php/8.1/fpm/php-fpm.conf</span><br><span class="line">nano /etc/php/8.1/fpm/php.ini</span><br><span class="line">systemctl restart php8.1-fpm</span><br><span class="line">systemctl <span class="built_in">enable</span> php8.1-fpm</span><br><span class="line">nano /etc/nginx/nginx.conf</span><br><span class="line">nano /etc/nginx/conf.d/&#123;website&#125;.conf</span><br><span class="line"><span class="built_in">chown</span> -R www-data:www-data /usr/share/nginx/html</span><br><span class="line">systemctl restart nginx</span><br></pre></td></tr></table></figure>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /etc/php/8.1/fpm/php-fpm.conf</span></span><br><span class="line"><span class="section">[global]</span></span><br><span class="line"><span class="attr">pid</span> = /run/php/php8.<span class="number">1</span>-fpm.pid</span><br><span class="line"><span class="attr">error_log</span> = /var/log/php8.<span class="number">1</span>-fpm.log</span><br><span class="line"><span class="attr">log_level</span> = notice</span><br><span class="line"><span class="section">[www]</span></span><br><span class="line"><span class="attr">listen</span> = /run/php/php8.<span class="number">1</span>-fpm.sock</span><br><span class="line"><span class="attr">listen.backlog</span> = <span class="number">8192</span></span><br><span class="line"><span class="attr">listen.allowed_clients</span> = <span class="number">127.0</span>.<span class="number">0.1</span></span><br><span class="line"><span class="attr">listen.owner</span> = www-data</span><br><span class="line"><span class="attr">listen.group</span> = www-data</span><br><span class="line"><span class="attr">listen.mode</span> = <span class="number">0666</span></span><br><span class="line"><span class="attr">user</span> = www-data</span><br><span class="line"><span class="attr">group</span> = www-data</span><br><span class="line"><span class="attr">pm</span> = dynamic</span><br><span class="line"><span class="attr">pm.status_path</span> = /phpfpm_81_status</span><br><span class="line"><span class="attr">pm.max_children</span> = <span class="number">30</span></span><br><span class="line"><span class="attr">pm.start_servers</span> = <span class="number">5</span></span><br><span class="line"><span class="attr">pm.min_spare_servers</span> = <span class="number">5</span></span><br><span class="line"><span class="attr">pm.max_spare_servers</span> = <span class="number">20</span></span><br><span class="line"><span class="attr">request_terminate_timeout</span> = <span class="number">100</span></span><br><span class="line"><span class="attr">request_slowlog_timeout</span> = <span class="number">30</span></span><br><span class="line"><span class="attr">slowlog</span> = /var/log/slow.log</span><br><span class="line"></span><br><span class="line"><span class="comment"># /etc/php/8.1/fpm/php.ini</span></span><br><span class="line"><span class="section">[PHP]</span></span><br><span class="line"><span class="attr">engine</span> = <span class="literal">On</span></span><br><span class="line"><span class="attr">short_open_tag</span> = <span class="literal">On</span></span><br><span class="line"><span class="attr">precision</span> = <span class="number">14</span></span><br><span class="line"><span class="attr">output_buffering</span> = <span class="number">4096</span></span><br><span class="line"><span class="attr">zlib.output_compression</span> = <span class="literal">Off</span></span><br><span class="line"><span class="attr">implicit_flush</span> = <span class="literal">Off</span></span><br><span class="line"><span class="attr">unserialize_callback_func</span> =</span><br><span class="line"><span class="attr">serialize_precision</span> = -<span class="number">1</span></span><br><span class="line"><span class="attr">disable_functions</span> = passthru,exec,system,putenv,chroot,chgrp,chown,shell_exec,popen,proc_open,pcntl_exec,ini_alter,ini_restore,dl,openlog,syslog,readlink,symlink,popepassthru,pcntl_alarm,pcntl_fork,pcntl_waitpid,pcntl_wait,pcntl_wifexited,pcntl_wifstopped,pcntl_wifsignaled,pcntl_wifcontinued,pcntl_wexitstatus,pcntl_wtermsig,pcntl_wstopsig,pcntl_signal,pcntl_signal_dispatch,pcntl_get_last_error,pcntl_strerror,pcntl_sigprocmask,pcntl_sigwaitinfo,pcntl_sigtimedwait,pcntl_exec,pcntl_getpriority,pcntl_setpriority,imap_open,apache_setenv</span><br><span class="line"><span class="attr">disable_classes</span> =</span><br><span class="line"><span class="attr">zend.enable_gc</span> = <span class="literal">On</span></span><br><span class="line"><span class="attr">zend.exception_ignore_args</span> = <span class="literal">On</span></span><br><span class="line"><span class="attr">zend.exception_string_param_max_len</span> = <span class="number">0</span></span><br><span class="line"><span class="attr">expose_php</span> = <span class="literal">Off</span></span><br><span class="line"><span class="attr">max_execution_time</span> = <span class="number">300</span></span><br><span class="line"><span class="attr">max_input_time</span> = <span class="number">60</span></span><br><span class="line"><span class="attr">memory_limit</span> = <span class="number">128</span>M</span><br><span class="line"><span class="attr">error_reporting</span> = E_ALL &amp; ~E_NOTICE</span><br><span class="line"><span class="attr">display_errors</span> = <span class="literal">On</span></span><br><span class="line"><span class="attr">display_startup_errors</span> = <span class="literal">Off</span></span><br><span class="line"><span class="attr">log_errors</span> = <span class="literal">On</span></span><br><span class="line"><span class="attr">log_errors_max_len</span> = <span class="number">1024</span></span><br><span class="line"><span class="attr">ignore_repeated_errors</span> = <span class="literal">Off</span></span><br><span class="line"><span class="attr">ignore_repeated_source</span> = <span class="literal">Off</span></span><br><span class="line"><span class="attr">report_memleaks</span> = <span class="literal">On</span></span><br><span class="line"><span class="attr">variables_order</span> = <span class="string">&quot;GPCS&quot;</span></span><br><span class="line"><span class="attr">request_order</span> = <span class="string">&quot;GP&quot;</span></span><br><span class="line"><span class="attr">register_argc_argv</span> = <span class="literal">Off</span></span><br><span class="line"><span class="attr">auto_globals_jit</span> = <span class="literal">On</span></span><br><span class="line"><span class="attr">post_max_size</span> = <span class="number">50</span>M</span><br><span class="line"><span class="attr">auto_prepend_file</span> =</span><br><span class="line"><span class="attr">auto_append_file</span> =</span><br><span class="line"><span class="attr">default_mimetype</span> = <span class="string">&quot;text/html&quot;</span></span><br><span class="line"><span class="attr">default_charset</span> = <span class="string">&quot;UTF-8&quot;</span></span><br><span class="line"><span class="attr">doc_root</span> =</span><br><span class="line"><span class="attr">user_dir</span> =</span><br><span class="line"><span class="attr">enable_dl</span> = <span class="literal">Off</span></span><br><span class="line"><span class="attr">cgi.fix_pathinfo</span>=<span class="number">1</span></span><br><span class="line"><span class="attr">file_uploads</span> = <span class="literal">On</span></span><br><span class="line"><span class="attr">upload_max_filesize</span> = <span class="number">50</span>M</span><br><span class="line"><span class="attr">max_file_uploads</span> = <span class="number">20</span></span><br><span class="line"><span class="attr">allow_url_fopen</span> = <span class="literal">On</span></span><br><span class="line"><span class="attr">allow_url_include</span> = <span class="literal">Off</span></span><br><span class="line"><span class="attr">default_socket_timeout</span> = <span class="number">60</span></span><br><span class="line"><span class="section">[CLI Server]</span></span><br><span class="line"><span class="attr">cli_server.color</span> = <span class="literal">On</span></span><br><span class="line"><span class="section">[Date]</span></span><br><span class="line"><span class="attr">date.timezone</span> = PRC</span><br><span class="line"><span class="section">[filter]</span></span><br><span class="line"><span class="section">[iconv]</span></span><br><span class="line"><span class="section">[imap]</span></span><br><span class="line"><span class="section">[intl]</span></span><br><span class="line"><span class="section">[sqlite3]</span></span><br><span class="line"><span class="section">[Pcre]</span></span><br><span class="line"><span class="section">[Pdo]</span></span><br><span class="line"><span class="section">[Pdo_mysql]</span></span><br><span class="line"><span class="attr">pdo_mysql.default_socket</span>=</span><br><span class="line"><span class="section">[Phar]</span></span><br><span class="line"><span class="section">[mail function]</span></span><br><span class="line"><span class="attr">SMTP</span> = localhost</span><br><span class="line"><span class="attr">smtp_port</span> = <span class="number">25</span></span><br><span class="line"><span class="attr">mail.add_x_header</span> = <span class="literal">Off</span></span><br><span class="line"><span class="section">[ODBC]</span></span><br><span class="line"><span class="attr">odbc.allow_persistent</span> = <span class="literal">On</span></span><br><span class="line"><span class="attr">odbc.check_persistent</span> = <span class="literal">On</span></span><br><span class="line"><span class="attr">odbc.max_persistent</span> = -<span class="number">1</span></span><br><span class="line"><span class="attr">odbc.max_links</span> = -<span class="number">1</span></span><br><span class="line"><span class="attr">odbc.defaultlrl</span> = <span class="number">4096</span></span><br><span class="line"><span class="attr">odbc.defaultbinmode</span> = <span class="number">1</span></span><br><span class="line"><span class="section">[MySQLi]</span></span><br><span class="line"><span class="attr">mysqli.max_persistent</span> = -<span class="number">1</span></span><br><span class="line"><span class="attr">mysqli.allow_persistent</span> = <span class="literal">On</span></span><br><span class="line"><span class="attr">mysqli.max_links</span> = -<span class="number">1</span></span><br><span class="line"><span class="attr">mysqli.default_port</span> = <span class="number">3306</span></span><br><span class="line"><span class="attr">mysqli.default_socket</span> =</span><br><span class="line"><span class="attr">mysqli.default_host</span> =</span><br><span class="line"><span class="attr">mysqli.default_user</span> =</span><br><span class="line"><span class="attr">mysqli.default_pw</span> =</span><br><span class="line"><span class="attr">mysqli.reconnect</span> = <span class="literal">Off</span></span><br><span class="line"><span class="section">[mysqlnd]</span></span><br><span class="line"><span class="attr">mysqlnd.collect_statistics</span> = <span class="literal">On</span></span><br><span class="line"><span class="attr">mysqlnd.collect_memory_statistics</span> = <span class="literal">Off</span></span><br><span class="line"><span class="section">[OCI8]</span></span><br><span class="line"><span class="section">[PostgreSQL]</span></span><br><span class="line"><span class="attr">pgsql.allow_persistent</span> = <span class="literal">On</span></span><br><span class="line"><span class="attr">pgsql.auto_reset_persistent</span> = <span class="literal">Off</span></span><br><span class="line"><span class="attr">pgsql.max_persistent</span> = -<span class="number">1</span></span><br><span class="line"><span class="attr">pgsql.max_links</span> = -<span class="number">1</span></span><br><span class="line"><span class="attr">pgsql.ignore_notice</span> = <span class="number">0</span></span><br><span class="line"><span class="attr">pgsql.log_notice</span> = <span class="number">0</span></span><br><span class="line"><span class="section">[bcmath]</span></span><br><span class="line"><span class="attr">bcmath.scale</span> = <span class="number">0</span></span><br><span class="line"><span class="section">[browscap]</span></span><br><span class="line"><span class="section">[Session]</span></span><br><span class="line"><span class="attr">session.save_handler</span> = redis</span><br><span class="line"><span class="attr">session.save_path</span> = <span class="string">&quot;tcp://127.0.0.1:6379&quot;</span></span><br><span class="line"><span class="attr">session.use_strict_mode</span> = <span class="number">0</span></span><br><span class="line"><span class="attr">session.use_cookies</span> = <span class="number">1</span></span><br><span class="line"><span class="attr">session.use_only_cookies</span> = <span class="number">1</span></span><br><span class="line"><span class="attr">session.name</span> = PHPSESSID</span><br><span class="line"><span class="attr">session.auto_start</span> = <span class="number">0</span></span><br><span class="line"><span class="attr">session.cookie_lifetime</span> = <span class="number">0</span></span><br><span class="line"><span class="attr">session.cookie_path</span> = /</span><br><span class="line"><span class="attr">session.cookie_domain</span> =</span><br><span class="line"><span class="attr">session.cookie_httponly</span> =</span><br><span class="line"><span class="attr">session.cookie_samesite</span> =</span><br><span class="line"><span class="attr">session.serialize_handler</span> = php</span><br><span class="line"><span class="attr">session.gc_probability</span> = <span class="number">1</span></span><br><span class="line"><span class="attr">session.gc_divisor</span> = <span class="number">1000</span></span><br><span class="line"><span class="attr">session.gc_maxlifetime</span> = <span class="number">1440</span></span><br><span class="line"><span class="attr">session.referer_check</span> =</span><br><span class="line"><span class="attr">session.cache_limiter</span> = nocache</span><br><span class="line"><span class="attr">session.cache_expire</span> = <span class="number">180</span></span><br><span class="line"><span class="attr">session.use_trans_sid</span> = <span class="number">0</span></span><br><span class="line"><span class="attr">session.sid_length</span> = <span class="number">26</span></span><br><span class="line"><span class="attr">session.trans_sid_tags</span> = <span class="string">&quot;a=href,area=href,frame=src,form=&quot;</span></span><br><span class="line"><span class="attr">session.sid_bits_per_character</span> = <span class="number">5</span></span><br><span class="line"><span class="section">[Assertion]</span></span><br><span class="line"><span class="attr">zend.assertions</span> = -<span class="number">1</span></span><br><span class="line"><span class="section">[COM]</span></span><br><span class="line"><span class="section">[mbstring]</span></span><br><span class="line"><span class="section">[gd]</span></span><br><span class="line"><span class="section">[exif]</span></span><br><span class="line"><span class="section">[Tidy]</span></span><br><span class="line"><span class="attr">tidy.clean_output</span> = <span class="literal">Off</span></span><br><span class="line"><span class="section">[soap]</span></span><br><span class="line"><span class="attr">soap.wsdl_cache_enabled</span>=<span class="number">1</span></span><br><span class="line"><span class="attr">soap.wsdl_cache_dir</span>=<span class="string">&quot;/tmp&quot;</span></span><br><span class="line"><span class="attr">soap.wsdl_cache_ttl</span>=<span class="number">86400</span></span><br><span class="line"><span class="attr">soap.wsdl_cache_limit</span> = <span class="number">5</span></span><br><span class="line"><span class="section">[sysvshm]</span></span><br><span class="line"><span class="section">[ldap]</span></span><br><span class="line"><span class="attr">ldap.max_links</span> = -<span class="number">1</span></span><br><span class="line"><span class="section">[dba]</span></span><br><span class="line"><span class="section">[opcache]</span></span><br><span class="line"><span class="section">[curl]</span></span><br><span class="line"><span class="attr">curl.cainfo</span> = /etc/ssl/certs/ca-certificates.crt</span><br><span class="line"><span class="section">[openssl]</span></span><br><span class="line"><span class="attr">openssl.cafile</span>=/etc/ssl/certs/ca-certificates.crt</span><br><span class="line"><span class="section">[Zend Opcache]</span></span><br><span class="line"><span class="attr">opcache.enable</span> = <span class="number">1</span></span><br><span class="line"><span class="attr">opcache.memory_consumption</span>=<span class="number">128</span></span><br><span class="line"><span class="attr">opcache.interned_strings_buffer</span>=<span class="number">32</span></span><br><span class="line"><span class="attr">opcache.max_accelerated_files</span>=<span class="number">80000</span></span><br><span class="line"><span class="attr">opcache.revalidate_freq</span>=<span class="number">3</span></span><br><span class="line"><span class="attr">opcache.fast_shutdown</span>=<span class="number">1</span></span><br><span class="line"><span class="attr">opcache.enable_cli</span>=<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /etc/nginx/nginx.conf</span></span><br><span class="line"><span class="attribute">user</span> www-data www-data;</span><br><span class="line"><span class="section">http</span> &#123;</span><br><span class="line">    <span class="attribute">fastcgi_connect_timeout</span> <span class="number">300</span>;</span><br><span class="line">    <span class="attribute">fastcgi_send_timeout</span> <span class="number">300</span>;</span><br><span class="line">    <span class="attribute">fastcgi_read_timeout</span> <span class="number">300</span>;</span><br><span class="line">    <span class="attribute">fastcgi_buffer_size</span> <span class="number">64k</span>;</span><br><span class="line">    <span class="attribute">fastcgi_buffers</span> <span class="number">4</span> <span class="number">64k</span>;</span><br><span class="line">    <span class="attribute">fastcgi_busy_buffers_size</span> <span class="number">128k</span>;</span><br><span class="line">    <span class="attribute">fastcgi_temp_file_write_size</span> <span class="number">256k</span>;</span><br><span class="line">    <span class="attribute">fastcgi_intercept_errors</span> <span class="literal">on</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># nano /etc/nginx/conf.d/&#123;website&#125;.conf</span></span><br><span class="line">    <span class="section">location</span> / &#123;</span><br><span class="line">        <span class="attribute">try_files</span> <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.php<span class="variable">$is_args</span><span class="variable">$args</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="section">location</span> <span class="regexp">~ [^/]\.php(/|$)</span> &#123;</span><br><span class="line">        <span class="attribute">try_files</span> <span class="variable">$uri</span> =<span class="number">404</span>;</span><br><span class="line">        <span class="attribute">fastcgi_pass</span>  unix:/run/php/php8.1-fpm.sock;</span><br><span class="line">        <span class="attribute">fastcgi_index</span> index.php;</span><br><span class="line">        <span class="attribute">fastcgi_param</span> PHP_ADMIN_VALUE <span class="string">&quot;open_basedir=<span class="variable">$document_root</span>/:/tmp/:/proc/&quot;</span>;</span><br><span class="line">        <span class="attribute">fastcgi_param</span>  SCRIPT_FILENAME    <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>;</span><br><span class="line">        <span class="attribute">include</span> fastcgi_params;</span><br><span class="line">        <span class="attribute">set</span> <span class="variable">$real_script_name</span> <span class="variable">$fastcgi_script_name</span>;</span><br><span class="line">        <span class="attribute">if</span> (<span class="variable">$fastcgi_script_name</span> <span class="regexp">~ &quot;^(.+?\.php)(/.+)$&quot;)</span> &#123;</span><br><span class="line">            <span class="attribute">set</span> <span class="variable">$real_script_name</span> <span class="variable">$1</span>;</span><br><span class="line">            <span class="attribute">set</span> <span class="variable">$path_info</span> <span class="variable">$2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="attribute">fastcgi_param</span> SCRIPT_FILENAME <span class="variable">$document_root</span><span class="variable">$real_script_name</span>;</span><br><span class="line">        <span class="attribute">fastcgi_param</span> SCRIPT_NAME <span class="variable">$real_script_name</span>;</span><br><span class="line">        <span class="attribute">fastcgi_param</span> PATH_INFO <span class="variable">$path_info</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="section">location</span> <span class="regexp">~ /\.ht</span> &#123;</span><br><span class="line">        <span class="attribute">deny</span> all;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="section">location</span> = /favicon.ico &#123; <span class="attribute">log_not_found</span> <span class="literal">off</span>; <span class="attribute">access_log</span> <span class="literal">off</span>; &#125;</span><br><span class="line">    <span class="section">location</span> = /robots.txt &#123; <span class="attribute">log_not_found</span> <span class="literal">off</span>; <span class="attribute">access_log</span> <span class="literal">off</span>; <span class="attribute">allow</span> all; &#125;</span><br><span class="line">    <span class="section">location</span> <span class="regexp">~* \.(css|gif|ico|jpeg|jpg|js|png)$</span> &#123;</span><br><span class="line">        <span class="attribute">expires</span> max;</span><br><span class="line">        <span class="attribute">log_not_found</span> <span class="literal">off</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="docker"><a class="markdownIt-Anchor" href="#docker"></a> Docker</h3>
+<p>Recommended docker image: <code>containrrr/watchtower</code></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br><span class="line">apt -y install apt-transport-https ca-certificates curl gnupg2 software-properties-common</span><br><span class="line">curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian <span class="subst">$(lsb_release -cs)</span> stable&quot;</span> | sudo <span class="built_in">tee</span> /etc/apt/sources.list.d/docker.list</span><br><span class="line">apt-get update</span><br><span class="line">apt-get install docker-ce docker-ce-cli containerd.io</span><br><span class="line">nano /etc/docker/daemon.json</span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl restart docker</span><br><span class="line">docker run -d --name vaultwarden --net main --ip 172.18.0.2 -v /vw-data/:/data/ \</span><br><span class="line">    -e DOMAIN=https://&#123;site&#125;/&#123;path&#125; \</span><br><span class="line">    -e SIGNUPS_ALLOWED=<span class="literal">false</span> -e INVITATIONS_ALLOWED=<span class="literal">false</span> \</span><br><span class="line">    -e ADMIN_TOKEN=&#123;token&#125; \</span><br><span class="line">    -e WEBSOCKET_ENABLED=<span class="literal">true</span> -e SHOW_PASSWORD_HINT=<span class="literal">false</span> \</span><br><span class="line">    vaultwarden/server:latest</span><br><span class="line">docker run -d \</span><br><span class="line">    --name watchtower --net main --ip 172.18.0.3 \</span><br><span class="line">    -v /var/run/docker.sock:/var/run/docker.sock \</span><br><span class="line">    containrrr/watchtower:latest \</span><br><span class="line">    --cleanup \</span><br><span class="line">    watchtower vaultwarden</span><br><span class="line">nano /etc/nginx/conf.d/&#123;website&#125;.conf</span><br><span class="line">systemctl restart nginx</span><br></pre></td></tr></table></figure>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// /etc/docker/daemon.json</span></span><br><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;registry-mirrors&quot;</span><span class="punctuation">:</span><span class="punctuation">[</span><span class="string">&quot;https://reg-mirror.qiniu.com/&quot;</span><span class="punctuation">]</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># /etc/nginx/conf.d/&#123;website&#125;.conf</span></span><br><span class="line"></span><br><span class="line"><span class="section">upstream</span> vaultwarden-default &#123;</span><br><span class="line">    <span class="attribute">zone</span> vaultwarden-default <span class="number">64k</span>;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">172.18.0.2:80</span>;</span><br><span class="line">    <span class="attribute">keepalive</span> <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="section">upstream</span> vaultwarden-ws &#123;</span><br><span class="line">    <span class="attribute">zone</span> vaultwarden-ws <span class="number">64k</span>;</span><br><span class="line">    <span class="attribute">server</span> <span class="number">172.18.0.2:3012</span>;</span><br><span class="line">    <span class="attribute">keepalive</span> <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="section">location</span> /&#123;path&#125; &#123;</span><br><span class="line">        <span class="attribute">proxy_http_version</span> <span class="number">1</span>.<span class="number">1</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> <span class="string">&quot;Connection&quot;</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://vaultwarden-default;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="section">location</span> /&#123;path&#125;/notifications/hub/<span class="section">negotiate</span> &#123;</span><br><span class="line">        <span class="attribute">proxy_http_version</span> <span class="number">1</span>.<span class="number">1</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> <span class="string">&quot;Connection&quot;</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://vaultwarden-default;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="section">location</span> /&#123;path&#125;/notifications/<span class="section">hub</span> &#123;</span><br><span class="line">        <span class="attribute">proxy_http_version</span> <span class="number">1</span>.<span class="number">1</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Upgrade <span class="variable">$http_upgrade</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Connection <span class="string">&quot;upgrade&quot;</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Host <span class="variable">$host</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Real-IP <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> Forwarded <span class="variable">$remote_addr</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-For <span class="variable">$proxy_add_x_forwarded_for</span>;</span><br><span class="line">        <span class="attribute">proxy_set_header</span> X-Forwarded-Proto <span class="variable">$scheme</span>;</span><br><span class="line">        <span class="attribute">proxy_pass</span> http://vaultwarden-ws;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</div>
+        </div>
+        
+            <div class="kratos-copyright text-center clearfix">
+                <h5 itemprop="copyrightNotice">本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+            </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://backup.meaqua.work/0e679178cb94/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://backup.meaqua.work/0e679178cb94/";
+            const title         = "「Debian 11 VPS deployment」";
+            const excerpt       = `Do NOT use BT Panel`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/tags/Debian/" rel="tag">Debian</a>, <a class="tag-none-link" href="/tags/Docker/" rel="tag">Docker</a>, <a class="tag-none-link" href="/tags/LNMP/" rel="tag">LNMP</a>, <a class="tag-none-link" href="/tags/Mariadb/" rel="tag">Mariadb</a>, <a class="tag-none-link" href="/tags/Nginx/" rel="tag">Nginx</a>, <a class="tag-none-link" href="/tags/Php/" rel="tag">Php</a>, <a class="tag-none-link" href="/tags/Pyenv/" rel="tag">Pyenv</a>, <a class="tag-none-link" href="/tags/Rclone/" rel="tag">Rclone</a>, <a class="tag-none-link" href="/tags/Redis/" rel="tag">Redis</a>, <a class="tag-none-link" href="/tags/VPS/" rel="tag">VPS</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2022-07-22T16:58:25.236Z" itemprop="dateModified">最后编辑：2022-07-23</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" Debian 11 VPS deployment SP" href="/1e3db55d2473/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="https://static.meaqua.work/img/avatar.webp" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">Olen vielä elossa.</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                3
+            </span>
+        </a>
+        <a class="meta-item" href="/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                2
+            </span>
+        </a>
+        <a class="meta-item" href="/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                13
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#warning"><span class="toc-text"> Warning</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pre-work"><span class="toc-text"> Pre work</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#first-boot"><span class="toc-text"> First boot</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#second-boot"><span class="toc-text"> Second boot</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#software"><span class="toc-text"> Software</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#nginx"><span class="toc-text"> Nginx</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pyenv-pyenv-virtualenv"><span class="toc-text"> Pyenv &amp; Pyenv-virtualenv</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#rclone"><span class="toc-text"> Rclone</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mariadb"><span class="toc-text"> Mariadb</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#redis"><span class="toc-text"> Redis</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#php"><span class="toc-text"> Php</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#docker"><span class="toc-text"> Docker</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Coding/">Coding</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Software/">Software</a><span class="category-list-count">3</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/Debian/" style="font-size: 0.8em;">Debian</a> <a href="/tags/Docker/" style="font-size: 0.6em;">Docker</a> <a href="/tags/LNMP/" style="font-size: 0.8em;">LNMP</a> <a href="/tags/Mariadb/" style="font-size: 0.6em;">Mariadb</a> <a href="/tags/Nginx/" style="font-size: 0.8em;">Nginx</a> <a href="/tags/Php/" style="font-size: 0.6em;">Php</a> <a href="/tags/Pyenv/" style="font-size: 0.6em;">Pyenv</a> <a href="/tags/Rclone/" style="font-size: 0.6em;">Rclone</a> <a href="/tags/Redis/" style="font-size: 0.6em;">Redis</a> <a href="/tags/VPS/" style="font-size: 0.8em;">VPS</a> <a href="/tags/bot/" style="font-size: 0.6em;">bot</a> <a href="/tags/coding-enc/" style="font-size: 0.6em;">coding-enc</a> <a href="/tags/maintenance/" style="font-size: 0.6em;">maintenance</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/1bac91af413a/"><i class="fa  fa-book"></i> HinakoBot Blacklist</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/1e3db55d2473/"><i class="fa  fa-book"></i> Debian 11 VPS deployment SP</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/0e679178cb94/"><i class="fa  fa-book"></i> Debian 11 VPS deployment</a>
+            
+          
+        
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        <li><a href="mailto:admin@meaqua.work"><i class="fa fa-envelope"></i></a></li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li><a target="_blank" rel="nofollow" href="/https://backup.meaqua.work/atom.xml"><i class="fa fa-rss"></i></a></li>
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2022 ねこの世界 版权所有.</li>
+                            <li>Yhä elossa: <span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by 稲坂梨彩.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a target="_blank" rel="noopener" href="https://meaqua.work">MeaquaDotWork</a></li>
+                        </div>
+                        <div>
+                            <li><a href="https://beian.miit.gov.cn" rel="external nofollow" target="_blank">辽ICP备2020011217号-5</a></li>
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="/vendors/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="/vendors/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+    <div>
+        <canvas id="snow"></canvas>
+        <script async src="/js/snow.min.js"></script>
+    </div>
+
+
+
+
+    <script defer src="/vendors/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="/vendors/meting@2.0.1/dist/Meting.min.js"></script>
+    <meting-js
+        server="netease"
+        type="playlist"
+        id="7473230985"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
+
+
+
+    <script defer src="/vendors/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="/vendors/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    <!-- hexo injector body_end start --><script defer src="https://unpkg.com/katex/dist/contrib/copy-tex.min.js"><!-- hexo injector body_end end --></body>
+</html>
